@@ -73,20 +73,9 @@ function setSkyCastBranding() {
                         x2="1"
                         y2="1"
                     >
-                        <stop
-                            offset="0%"
-                            stop-color="#ffd36b"
-                        ></stop>
-
-                        <stop
-                            offset="48%"
-                            stop-color="#ff75b7"
-                        ></stop>
-
-                        <stop
-                            offset="100%"
-                            stop-color="#a978ff"
-                        ></stop>
+                        <stop offset="0%" stop-color="#ffd36b"></stop>
+                        <stop offset="48%" stop-color="#ff75b7"></stop>
+                        <stop offset="100%" stop-color="#a978ff"></stop>
                     </linearGradient>
                 </defs>
 
@@ -124,21 +113,6 @@ function setSkyCastBranding() {
             </svg>
         `;
     }
-}
-//current location
-function disableLightMode() {
-    document.body.classList.remove("light-mode");
-
-    const toggle = document.getElementById("theme-toggle");
-
-    if (toggle) {
-        toggle.remove();
-    }
-
-    try {
-        localStorage.removeItem("weatherTheme");
-    }
-    catch (_) { }
 }
 
 function moveCurrentLocationButton() {
@@ -231,7 +205,6 @@ function moveCurrentLocationButton() {
             });
     }
 }
-/*  SAVED LOCATIONS*/
 
 function getSavedLocations() {
     try {
@@ -469,8 +442,6 @@ function renderLocations() {
     });
 }
 
-/*WEATHER */
-
 function getWeatherState(weatherCondition) {
     const text =
         String(weatherCondition || "")
@@ -686,8 +657,6 @@ function drawCloud(
     ctx.translate(x, y);
     ctx.scale(scale, scale);
 
-    const lightMode = false;
-
     const bodyGradient =
         ctx.createLinearGradient(
             0,
@@ -696,62 +665,34 @@ function drawCloud(
             65
         );
 
-    if (lightMode) {
-        bodyGradient.addColorStop(
-            0,
-            `rgba(250,248,255,${Math.min(
-                opacity + 0.20,
-                0.78
-            )})`
-        );
+    bodyGradient.addColorStop(
+        0,
+        `rgba(250,248,255,${Math.min(
+            opacity + 0.15,
+            0.72
+        )})`
+    );
 
-        bodyGradient.addColorStop(
-            0.55,
-            `rgba(166,156,190,${Math.min(
-                opacity + 0.16,
-                0.66
-            )})`
-        );
+    bodyGradient.addColorStop(
+        0.55,
+        `rgba(172,168,194,${Math.min(
+            opacity + 0.08,
+            0.54
+        )})`
+    );
 
-        bodyGradient.addColorStop(
-            1,
-            `rgba(82,72,104,${Math.min(
-                opacity + 0.12,
-                0.48
-            )})`
-        );
-    }
-    else {
-        bodyGradient.addColorStop(
-            0,
-            `rgba(250,248,255,${Math.min(
-                opacity + 0.15,
-                0.72
-            )})`
-        );
-
-        bodyGradient.addColorStop(
-            0.55,
-            `rgba(172,168,194,${Math.min(
-                opacity + 0.08,
-                0.54
-            )})`
-        );
-
-        bodyGradient.addColorStop(
-            1,
-            `rgba(57,53,76,${Math.min(
-                opacity + 0.10,
-                0.42
-            )})`
-        );
-    }
+    bodyGradient.addColorStop(
+        1,
+        `rgba(57,53,76,${Math.min(
+            opacity + 0.10,
+            0.42
+        )})`
+    );
 
     ctx.shadowBlur = 26;
 
-    ctx.shadowColor = lightMode
-        ? "rgba(93,70,126,0.18)"
-        : "rgba(0,0,0,0.34)";
+    ctx.shadowColor =
+        "rgba(0,0,0,0.34)";
 
     ctx.fillStyle =
         bodyGradient;
@@ -786,56 +727,29 @@ function drawCloud(
                     radius
                 );
 
-            if (lightMode) {
-                g.addColorStop(
-                    0,
-                    `rgba(255,255,255,${Math.min(
-                        opacity + 0.28,
-                        0.92
-                    )})`
-                );
+            g.addColorStop(
+                0,
+                `rgba(255,255,255,${Math.min(
+                    opacity + 0.24,
+                    0.86
+                )})`
+            );
 
-                g.addColorStop(
-                    0.55,
-                    `rgba(206,198,221,${Math.min(
-                        opacity + 0.22,
-                        0.78
-                    )})`
-                );
+            g.addColorStop(
+                0.55,
+                `rgba(200,197,218,${Math.min(
+                    opacity + 0.15,
+                    0.68
+                )})`
+            );
 
-                g.addColorStop(
-                    1,
-                    `rgba(105,94,127,${Math.min(
-                        opacity + 0.10,
-                        0.54
-                    )})`
-                );
-            }
-            else {
-                g.addColorStop(
-                    0,
-                    `rgba(255,255,255,${Math.min(
-                        opacity + 0.24,
-                        0.86
-                    )})`
-                );
-
-                g.addColorStop(
-                    0.55,
-                    `rgba(200,197,218,${Math.min(
-                        opacity + 0.15,
-                        0.68
-                    )})`
-                );
-
-                g.addColorStop(
-                    1,
-                    `rgba(76,72,96,${Math.min(
-                        opacity + 0.10,
-                        0.46
-                    )})`
-                );
-            }
+            g.addColorStop(
+                1,
+                `rgba(76,72,96,${Math.min(
+                    opacity + 0.10,
+                    0.46
+                )})`
+            );
 
             ctx.fillStyle = g;
 
@@ -853,9 +767,7 @@ function drawCloud(
 
             if (index === 1) {
                 ctx.strokeStyle =
-                    lightMode
-                        ? "rgba(255,255,255,0.32)"
-                        : "rgba(255,255,255,0.20)";
+                    "rgba(255,255,255,0.20)";
 
                 ctx.lineWidth = 2;
 
@@ -941,8 +853,7 @@ function drawSun(ctx) {
 
     for (let i = 0; i < 16; i++) {
         const angle =
-            (Math.PI * 2 * i) /
-            16;
+            (Math.PI * 2 * i) / 16;
 
         const inner = 74;
         const outer = 108;
@@ -950,17 +861,13 @@ function drawSun(ctx) {
         ctx.beginPath();
 
         ctx.moveTo(
-            Math.cos(angle) *
-            inner,
-            Math.sin(angle) *
-            inner
+            Math.cos(angle) * inner,
+            Math.sin(angle) * inner
         );
 
         ctx.lineTo(
-            Math.cos(angle) *
-            outer,
-            Math.sin(angle) *
-            outer
+            Math.cos(angle) * outer,
+            Math.sin(angle) * outer
         );
 
         ctx.stroke();
@@ -1186,8 +1093,7 @@ function drawStars(ctx) {
             Math.sin(
                 performance.now() / 700 +
                 star.x
-            ) *
-            0.26;
+            ) * 0.26;
 
         ctx.fillStyle =
             `rgba(255,255,255,${Math.max(
@@ -1287,8 +1193,7 @@ function drawWeatherEnvironment() {
         }
 
         if (
-            currentWeatherState ===
-            "clouds"
+            currentWeatherState === "clouds"
         ) {
             environmentClouds.forEach(
                 cloud => {
@@ -1305,8 +1210,7 @@ function drawWeatherEnvironment() {
 
                     if (
                         cloud.x >
-                        window.innerWidth +
-                        250
+                        window.innerWidth + 250
                     ) {
                         cloud.x = -250;
                     }
@@ -1333,8 +1237,7 @@ function drawWeatherEnvironment() {
 
                     if (
                         cloud.x >
-                        window.innerWidth +
-                        250
+                        window.innerWidth + 250
                     ) {
                         cloud.x = -250;
                     }
@@ -1342,8 +1245,6 @@ function drawWeatherEnvironment() {
             );
 
             particles.forEach(p => {
-                const lightMode = false;
-
                 const dropGradient =
                     ctx.createLinearGradient(
                         p.x,
@@ -1354,32 +1255,24 @@ function drawWeatherEnvironment() {
 
                 dropGradient.addColorStop(
                     0,
-                    lightMode
-                        ? "rgba(255,255,255,0.75)"
-                        : "rgba(220,232,255,0.68)"
+                    "rgba(220,232,255,0.68)"
                 );
 
                 dropGradient.addColorStop(
                     0.30,
-                    lightMode
-                        ? "rgba(99,120,175,0.68)"
-                        : "rgba(126,159,220,0.56)"
+                    "rgba(126,159,220,0.56)"
                 );
 
                 dropGradient.addColorStop(
                     1,
-                    lightMode
-                        ? "rgba(85,72,130,0.22)"
-                        : "rgba(93,116,176,0.16)"
+                    "rgba(93,116,176,0.16)"
                 );
 
                 ctx.strokeStyle =
                     dropGradient;
 
                 ctx.lineWidth = 1.8;
-
-                ctx.lineCap =
-                    "round";
+                ctx.lineCap = "round";
 
                 ctx.beginPath();
 
@@ -1412,8 +1305,7 @@ function drawWeatherEnvironment() {
         }
 
         if (
-            currentWeatherState ===
-            "thunder"
+            currentWeatherState === "thunder"
         ) {
             if (
                 !nextLightning ||
@@ -1430,8 +1322,8 @@ function drawWeatherEnvironment() {
 
             if (lightningFlash > 0) {
                 ctx.fillStyle =
-                    `rgba(255,255,255,${lightningFlash *
-                    0.28})`;
+                    `rgba(255,255,255,${lightningFlash * 0.28
+                    })`;
 
                 ctx.fillRect(
                     0,
@@ -1546,8 +1438,7 @@ function drawWeatherEnvironment() {
         }
 
         if (
-            currentWeatherState ===
-            "snow"
+            currentWeatherState === "snow"
         ) {
             environmentClouds.forEach(
                 cloud => {
@@ -1564,8 +1455,7 @@ function drawWeatherEnvironment() {
 
                     if (
                         cloud.x >
-                        window.innerWidth +
-                        250
+                        window.innerWidth + 250
                     ) {
                         cloud.x = -250;
                     }
@@ -1609,8 +1499,7 @@ function drawWeatherEnvironment() {
         }
 
         if (
-            currentWeatherState ===
-            "mist"
+            currentWeatherState === "mist"
         ) {
             drawFog(ctx);
         }
@@ -1641,8 +1530,7 @@ function drawWeatherEnvironment() {
             "rgba(0,0,0,0.10)"
         );
 
-        ctx.fillStyle =
-            vignette;
+        ctx.fillStyle = vignette;
 
         ctx.fillRect(
             0,
@@ -1652,15 +1540,11 @@ function drawWeatherEnvironment() {
         );
 
         animationFrame =
-            requestAnimationFrame(
-                animate
-            );
+            requestAnimationFrame(animate);
     }
 
     animationFrame =
-        requestAnimationFrame(
-            animate
-        );
+        requestAnimationFrame(animate);
 }
 
 window.addEventListener(
@@ -1671,10 +1555,6 @@ window.addEventListener(
         placeLocationsSection();
     }
 );
-
-/* =========================================================
-   SEARCH + CURRENT LOCATION
-========================================================= */
 
 if (searchButton) {
     searchButton.addEventListener(
@@ -1845,26 +1725,35 @@ function getCurrentLocation() {
     );
 }
 
-document
-    .querySelectorAll("button")
-    .forEach(button => {
-        const text =
-            button.textContent.toLowerCase();
+function attachLocationButton() {
+    const locationButton =
+        document.querySelector(
+            ".main-location-button"
+        );
 
-        if (
-            text.includes("current location") ||
-            text.includes("use my location")
-        ) {
-            button.addEventListener(
-                "click",
-                getCurrentLocation
-            );
-        }
-    });
+    if (
+        !locationButton
+    ) {
+        return;
+    }
 
-/* =========================================================
-   CURRENT WEATHER
-========================================================= */
+    if (
+        locationButton.dataset
+            .skycastLocationBound ===
+        "1"
+    ) {
+        return;
+    }
+
+    locationButton.dataset
+        .skycastLocationBound =
+        "1";
+
+    locationButton.addEventListener(
+        "click",
+        getCurrentLocation
+    );
+}
 
 function showWeather(data) {
     safeText(
@@ -1914,50 +1803,30 @@ function showWeather(data) {
 
     updateActivity(data);
 
-    const sunrise =
-        byId("sunrise");
+    safeText(
+        byId("sunrise"),
+        data.sunrise ||
+        "--"
+    );
 
-    const sunset =
-        byId("sunset");
+    safeText(
+        byId("sunset"),
+        data.sunset ||
+        "--"
+    );
 
-    const moonrise =
-        byId("moonrise");
+    safeText(
+        byId("moonrise"),
+        data.moonrise ||
+        "--"
+    );
 
-    const moonset =
-        byId("moonset");
-
-    if (sunrise) {
-        safeText(
-            sunrise,
-            data.sunrise || "--"
-        );
-    }
-
-    if (sunset) {
-        safeText(
-            sunset,
-            data.sunset || "--"
-        );
-    }
-
-    if (moonrise) {
-        safeText(
-            moonrise,
-            data.moonrise || "--"
-        );
-    }
-
-    if (moonset) {
-        safeText(
-            moonset,
-            data.moonset || "--"
-        );
-    }
+    safeText(
+        byId("moonset"),
+        data.moonset ||
+        "--"
+    );
 }
-
-/* =========================================================
-   ACTIVITY
-========================================================= */
 
 function updateActivity(data) {
     if (
@@ -1972,7 +1841,8 @@ function updateActivity(data) {
 
     const weather =
         String(
-            data.condition || ""
+            data.condition ||
+            ""
         ).toLowerCase();
 
     if (
@@ -2021,22 +1891,22 @@ function updateActivity(data) {
     }
 }
 
-/* =========================================================
-   DETAIL CARDS
-========================================================= */
-
 document
-    .querySelectorAll(".weather-card")
-    .forEach(card => {
-        card.addEventListener(
-            "click",
-            () => {
-                showDetail(
-                    card.dataset.detail
-                );
-            }
-        );
-    });
+    .querySelectorAll(
+        ".weather-card"
+    )
+    .forEach(
+        card => {
+            card.addEventListener(
+                "click",
+                () => {
+                    showDetail(
+                        card.dataset.detail
+                    );
+                }
+            );
+        }
+    );
 
 function showDetail(type) {
     if (
@@ -2066,8 +1936,7 @@ function showDetail(type) {
             </p>
 
             <p>
-                Humidity describes the amount of
-                moisture present in the air.
+                Humidity describes the amount of moisture present in the air.
             </p>
         `;
     }
@@ -2088,8 +1957,7 @@ function showDetail(type) {
             </p>
 
             <p>
-                Wind can influence how warm or
-                cool the air feels.
+                Wind can influence how warm or cool the air feels.
             </p>
         `;
     }
@@ -2111,8 +1979,7 @@ function showDetail(type) {
             </p>
 
             <p>
-                Atmospheric pressure is the force
-                exerted by the surrounding air.
+                Atmospheric pressure is the force exerted by the surrounding air.
             </p>
         `;
     }
@@ -2133,8 +2000,7 @@ function showDetail(type) {
             </p>
 
             <p>
-                Visibility can decrease during fog,
-                haze, rain, or other conditions.
+                Visibility can decrease during fog, haze, rain, or other conditions.
             </p>
         `;
     }
@@ -2168,10 +2034,6 @@ if (closePanel) {
         }
     );
 }
-
-/* =========================================================
-   FORECAST
-========================================================= */
 
 async function loadForecast(city) {
     if (
@@ -2411,10 +2273,6 @@ function formatDate(dateString) {
     );
 }
 
-/* =========================================================
-   AIR QUALITY
-========================================================= */
-
 async function loadAirQuality(data) {
     const aqiValue =
         byId("aqi-value");
@@ -2516,23 +2374,18 @@ async function loadAirQuality(data) {
     );
 }
 
-/* =========================================================
-   INITIAL STATE
-========================================================= */
-
-disableLightMode();
-
 setSkyCastBranding();
-
 moveCurrentLocationButton();
-
 placeLocationsSection();
-
 renderLocations();
-
 createEnvironmentObjects();
-
 setWeatherScene(
     "clear",
     "01d"
 );
+
+window.searchWeather =
+    searchWeather;
+
+window.getCurrentLocation =
+    getCurrentLocation;
