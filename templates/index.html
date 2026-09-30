@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Check Your Weather</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- =================================================
+         WEATHER BACKGROUND
+    ================================================== -->
+
+    <div id="weather-scene">
+        <canvas id="weather-canvas"></canvas>
+    </div>
+
+
+    <!-- =================================================
+         APP
+    ================================================== -->
+
+    <div class="app">
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <span>☁️</span>
+                <h1>Check Your Weather</h1>
+            </div>
+
+
+            <nav>
+
+                <button class="nav-item active" type="button">
+                    <span>⌂</span>
+                    Home
+                </button>
+
+                <button class="nav-item" type="button"
+                    onclick="document.getElementById('search-section').scrollIntoView({behavior:'smooth'})">
+                    <span>⌕</span>
+                    Search
+                </button>
+
+                <button class="nav-item" type="button"
+                    onclick="document.getElementById('locations-section').scrollIntoView({behavior:'smooth'})">
+                    <span>♡</span>
+                    Locations
+                </button>
+
+            </nav>
+
+
+            <button id="sidebar-location" class="location-btn" type="button">
+                📍 Current Location
+            </button>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 TOP BAR
+            ================================================== -->
+
+            <div class="top-bar">
+
+                <div>
+                    <div class="small-text">
+                        CURRENT WEATHER
+                    </div>
+
+                    <h2>
+                        Check Your Weather
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SEARCH
+            ================================================== -->
+
+            <section id="search-section" class="search-section">
+
+                <div class="search-box">
+
+                    <span>⌕</span>
+
+                    <input id="city-input" type="text" placeholder="Search for a city..." autocomplete="off">
+
+                    <button id="search-button" type="button">
+                        Search
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LOCATIONS
+            ================================================== -->
+
+            <section id="locations-section" class="section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        Your Locations
+                    </h3>
+
+                    <span>
+                        Saved cities
+                    </span>
+
+                </div>
+
+
+                <button id="mobile-location" class="location-btn" type="button">
+                    📍 Use My Current Location
+                </button>
+
+
+                <div id="locations-container">
+
+                    <div class="empty-state">
+                        Search for a city to save it here.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CURRENT WEATHER
+            ================================================== -->
+
+            <section class="weather-hero">
+
+                <div id="city-name" class="location">
+                    Search for a city
+                </div>
+
+
+                <div id="temperature" class="temperature">
+                    --
+                </div>
+
+
+                <div id="condition" class="condition">
+                    --
+                </div>
+
+
+                <div id="feels-like" class="feels">
+                    Feels like --
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 WEATHER DETAILS
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        Weather Details
+                    </h3>
+
+                    <span>
+                        Tap a card
+                    </span>
+
+                </div>
+
+
+                <div class="weather-grid">
+
+
+                    <button class="weather-card" type="button" data-detail="humidity">
+
+                        <div class="card-icon">
+                            💧
+                        </div>
+
+                        <span>
+                            Humidity
+                        </span>
+
+                        <strong id="humidity">
+                            --
+                        </strong>
+
+                        <span class="expand-icon">
+                            ↗
+                        </span>
+
+                    </button>
+
+
+                    <button class="weather-card" type="button" data-detail="wind">
+
+                        <div class="card-icon">
+                            💨
+                        </div>
+
+                        <span>
+                            Wind
+                        </span>
+
+                        <strong id="wind">
+                            --
+                        </strong>
+
+                        <span class="expand-icon">
+                            ↗
+                        </span>
+
+                    </button>
+
+
+                    <button class="weather-card" type="button" data-detail="pressure">
+
+                        <div class="card-icon">
+                            🌡️
+                        </div>
+
+                        <span>
+                            Pressure
+                        </span>
+
+                        <strong id="pressure">
+                            --
+                        </strong>
+
+                        <span class="expand-icon">
+                            ↗
+                        </span>
+
+                    </button>
+
+
+                    <button class="weather-card" type="button" data-detail="visibility">
+
+                        <div class="card-icon">
+                            👁️
+                        </div>
+
+                        <span>
+                            Visibility
+                        </span>
+
+                        <strong id="visibility">
+                            --
+                        </strong>
+
+                        <span class="expand-icon">
+                            ↗
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- EXPANDED WEATHER DETAIL -->
+
+                <div id="expanded-panel" class="expanded-panel">
+
+                    <button id="close-panel" class="close-panel" type="button">
+                        ×
+                    </button>
+
+                    <div id="expanded-content"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 AIR QUALITY
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        Air Quality
+                    </h3>
+
+                    <span>
+                        Current conditions
+                    </span>
+
+                </div>
+
+
+                <div class="air-quality-card">
+
+
+                    <div class="aqi-circle">
+
+                        <span id="aqi-value">
+                            --
+                        </span>
+
+                        <small>
+                            AQI
+                        </small>
+
+                    </div>
+
+
+                    <div class="aqi-info">
+
+                        <h4>
+                            Air Quality
+                        </h4>
+
+                        <p id="aqi-category">
+                            No data
+                        </p>
+
+
+                        <div class="aqi-bar"></div>
+
+
+                        <div class="aqi-pollutants">
+
+
+                            <div class="aqi-pollutant">
+
+                                <span>
+                                    PM2.5
+                                </span>
+
+                                <strong id="pm25">
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                            <div class="aqi-pollutant">
+
+                                <span>
+                                    PM10
+                                </span>
+
+                                <strong id="pm10">
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                            <div class="aqi-pollutant">
+
+                                <span>
+                                    NO₂
+                                </span>
+
+                                <strong id="no2">
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                            <div class="aqi-pollutant">
+
+                                <span>
+                                    O₃
+                                </span>
+
+                                <strong id="o3">
+                                    --
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 WHAT SHOULD I DO
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        What Should I Do?
+                    </h3>
+
+                </div>
+
+
+                <div class="activity-card">
+
+                    <div class="activity-icon">
+                        ✨
+                    </div>
+
+                    <div>
+
+                        <h4 id="activity-title">
+                            Search for a city
+                        </h4>
+
+                        <p id="activity-text">
+                            We'll suggest activities based on the weather.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 HOURLY FORECAST
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        Upcoming Weather
+                    </h3>
+
+                    <span>
+                        3-hour intervals
+                    </span>
+
+                </div>
+
+
+                <div id="hourly-container" class="hourly-container">
+
+                    <div class="hour-card">
+
+                        <span>--:--</span>
+
+                        <div class="hour-weather-icon">
+                            🌤️
+                        </div>
+
+                        <strong>
+                            --
+                        </strong>
+
+                        <small>
+                            --% rain
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 5 DAY FORECAST
+            ================================================== -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        5-Day Forecast
+                    </h3>
+
+                    <span>
+                        Tap a day for details
+                    </span>
+
+                </div>
+
+
+                <div id="forecast-container" class="forecast-container">
+
+                    <div class="forecast-item">
+
+                        <button class="forecast-card" type="button" disabled>
+
+                            <span>
+                                --
+                            </span>
+
+                            <span class="forecast-condition">
+                                Waiting for weather
+                            </span>
+
+                            <strong>
+                                --
+                            </strong>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+    <!-- =================================================
+         MOBILE NAVIGATION
+    ================================================== -->
+
+    <div class="mobile-nav">
+
+        <button class="active" type="button" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <span>⌂</span>
+            <small>Home</small>
+        </button>
+
+
+        <button type="button" onclick="document.getElementById('search-section').scrollIntoView({behavior:'smooth'})">
+            <span>⌕</span>
+            <small>Search</small>
+        </button>
+
+
+        <button id="mobile-nav-location" type="button">
+            <span>📍</span>
+            <small>Location</small>
+        </button>
+
+
+        <button type="button"
+            onclick="document.getElementById('locations-section').scrollIntoView({behavior:'smooth'})">
+            <span>♡</span>
+            <small>Saved</small>
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         JAVASCRIPT
+    ================================================== -->
+
+    <script src="/static/script.js?v=9999"></script>
+
+</body>
+
+</html>
