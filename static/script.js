@@ -49,10 +49,6 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 }
 
-/* =========================================================
-   SKYCAST BRANDING + LOGO
-========================================================= */
-
 function setSkyCastBranding() {
     document.title = "SkyCast";
 
@@ -129,11 +125,7 @@ function setSkyCastBranding() {
         `;
     }
 }
-
-/* =========================================================
-   CURRENT LOCATION BUTTON
-========================================================= */
-
+//current location
 function disableLightMode() {
     document.body.classList.remove("light-mode");
 
@@ -239,10 +231,7 @@ function moveCurrentLocationButton() {
             });
     }
 }
-
-/* =========================================================
-   SAVED LOCATIONS
-========================================================= */
+/*  SAVED LOCATIONS*/
 
 function getSavedLocations() {
     try {
@@ -480,9 +469,7 @@ function renderLocations() {
     });
 }
 
-/* =========================================================
-   WEATHER ENVIRONMENT
-========================================================= */
+/*WEATHER */
 
 function getWeatherState(weatherCondition) {
     const text =
