@@ -16,7 +16,7 @@ It uses the OpenWeather API to get weather information for different cities and 
 ![SkyCast Features](screenshots/03-features.png)
 
 ### 5-Day Forecast
-![SkyCast 5-Day Forecast](screenshots/04-5-day-forecast.png)
+![SkyCast 5-Day Forecast](screenshots/04-5_day_forecast.png)
 
 ### Search
 ![SkyCast Search](screenshots/05-searches.png)
